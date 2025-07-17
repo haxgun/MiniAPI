@@ -17,7 +17,7 @@ func NewCacheMiddleware(client *redis.Client) *CacheMiddleware {
 	return &CacheMiddleware{client: client}
 }
 
-func (cm *CacheMiddleware) GetFromCache(key string, dest interface{}) error {
+func (cm *CacheMiddleware) GetFromCache(key string, dest any) error {
 	val, err := cm.client.Get(context.Background(), key).Result()
 	if err != nil {
 		return err
@@ -25,7 +25,7 @@ func (cm *CacheMiddleware) GetFromCache(key string, dest interface{}) error {
 	return json.Unmarshal([]byte(val), dest)
 }
 
-func (cm *CacheMiddleware) SetToCache(key string, value interface{}, expiration time.Duration) error {
+func (cm *CacheMiddleware) SetToCache(key string, value any, expiration time.Duration) error {
 	jsonValue, err := json.Marshal(value)
 	if err != nil {
 		return err

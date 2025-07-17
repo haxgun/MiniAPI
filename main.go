@@ -14,15 +14,14 @@ import (
 	"gorm.io/gorm"
 )
 
-
 func main() {
-	// Загружаем конфигурацию
+	// Loading configuration
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatal("Failed to load config:", err)
 	}
 
-	// Подключаемся к базе данных
+	// Connecting to database
 	var db *gorm.DB
 	if cfg.IsSQLite() {
 		db, err = gorm.Open(sqlite.Open(cfg.GetDatabaseDSN()), &gorm.Config{})
@@ -33,18 +32,18 @@ func main() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	// Автоматические миграции
+	// Automatic migrations
 	if err := db.AutoMigrate(&models.User{}); err != nil {
 		log.Fatal("Failed to migrate database:", err)
 	}
 
-	// Создаем обработчики
+	// Creating handlers
 	userHandler := handlers.NewUserHandler(db)
 
-	// Настраиваем роутер
+	// Setting up router
 	router := gin.Default()
 
-	// API роуты
+	// API routes
 	api := router.Group("/api/v1")
 	{
 		users := api.Group("/users")
@@ -57,7 +56,7 @@ func main() {
 		}
 	}
 
-	// Запускаем сервер
+	// Starting server
 	port := cfg.Server.Port
 	if port == "" {
 		port = "8080"

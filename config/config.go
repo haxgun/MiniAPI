@@ -21,7 +21,7 @@ type DatabaseConfig struct {
 	Password string
 	Name     string
 	SSLMode  string
-	Path     string // для SQLite
+	Path     string // for SQLite
 }
 
 type ServerConfig struct {
@@ -29,7 +29,7 @@ type ServerConfig struct {
 }
 
 func LoadConfig() (*Config, error) {
-	// Пытаемся загрузить .env.dev для разработки, если не получается - обычный .env
+	// Try to load .env.dev for development, if not possible - regular .env
 	if err := godotenv.Load(".env.dev"); err != nil {
 		if err := godotenv.Load(); err != nil {
 			return nil, fmt.Errorf("error loading .env file: %w", err)
@@ -39,7 +39,7 @@ func LoadConfig() (*Config, error) {
 	dbPort, _ := strconv.Atoi(os.Getenv("DB_PORT"))
 	dbType := os.Getenv("DB_TYPE")
 	if dbType == "" {
-		dbType = "postgres" // по умолчанию PostgreSQL
+		dbType = "postgres"
 	}
 
 	return &Config{
