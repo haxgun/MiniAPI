@@ -28,7 +28,6 @@ restapi/
 ├── middleware/     # Middleware (cache, etc.)
 ├── models/         # Database models
 ├── data/          # SQLite database files (dev)
-├── scripts/       # Database initialization scripts
 ├── .env           # Production environment variables
 ├── .env.dev       # Development environment variables
 ├── go.mod         # Go module file
